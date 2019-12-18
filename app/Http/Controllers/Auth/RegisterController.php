@@ -22,7 +22,9 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers {
+        register as registration;
+    }
 
     /**
      * Where to redirect users after registration.
@@ -68,6 +70,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'google2fa_secret' => $data['google2fa_secret'],
         ]);
     }
 
@@ -89,5 +92,10 @@ class RegisterController extends Controller
         );
         return view('google2fa.register', ['QR_Image' => $QR_Image, 'secret' => $registration_data['google2fa_secret']]);
         
+    }
+
+    public function completeRegistration(Request $request){
+        $request->merge(session('registration_data'));
+        return $this->registation($request);
     }
 }
