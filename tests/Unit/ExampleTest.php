@@ -23,6 +23,10 @@ class ExampleTest extends TestCase
     public function testRegisterControllerRegister(){
         fwrite(STDOUT, __METHOD__ . "\n");
 
+        // $this->app->make('Illuminate\Contracts\Http\Kernel')
+        // ->pushMiddleware('Illuminate\Session\Middleware\StartSession')
+        // ->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession::class');
+
         // $user = factory(User::class)->make([
         //     'email' => 'janitha@mailinator.com',
         //     'twofa_token' => 123456]);
@@ -30,6 +34,8 @@ class ExampleTest extends TestCase
         // fwrite(STDOUT,print_r($user,true));
         // $this->actingAs($user);
         // $this->session(['foo' => 'bar']);
+
+        // $this->loginUser();
         $registercontroller = new RegisterController();
         $request = Request::create('/','POST',[
             '_token' => 'PH628EPqOvm9bq7u7pCMKf6wJ7FfZ70yMmxTYJgt',
@@ -44,12 +50,20 @@ class ExampleTest extends TestCase
         $this->assertEquals($reponse->getName(),'google2fa.register');
     }
 
-    public function testRoute(){
+    public function testRouteCompleteRegistration(){
         fwrite(STDOUT, __METHOD__ . "\n");
         $app_url = env('APP_URL');
         $url = '/complete-registration';
         $response = $this->get($url);
         $this->assertEquals($response->getStatusCode(),200);
+    }
+
+    public function testRoute2fa(){
+        fwrite(STDOUT, __METHOD__ . "\n");
+        $app_url = env('APP_URL');
+        $url = '/2fa';
+        $response = $this->post($url);
+        $this->assertEquals($response->getStatusCode(),302);
     }
 
     public function testCompleteRegistration(){
@@ -68,4 +82,7 @@ class ExampleTest extends TestCase
         // fwrite(STDOUT,print_r($reponse->getName(),true));
         $this->assertEquals($reponse->getName(),'google2fa.register');
     }
+    // public function testSession(){
+    //     $this->hasSession();
+    // }
 }

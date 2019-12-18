@@ -22,7 +22,8 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers {
+    use RegistersUsers
+    {
         register as registration;
     }
 
@@ -96,6 +97,6 @@ class RegisterController extends Controller
 
     public function completeRegistration(Request $request){
         $request->merge(session('registration_data'));
-        return $this->registation($request);
+        return $this->registration($request);
     }
 }
