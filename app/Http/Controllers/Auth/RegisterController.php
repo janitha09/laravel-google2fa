@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -68,5 +69,25 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+
+    public function register(Request $request){
+        $valid = $this->validator($request->all())->validate();
+        // print_r($request->all());
+        // fwrite(STDOUT,print_r($valid,true));
+        $google2fa = app('pragmarx.google2fa');
+        // fwrite(STDOUT,print_r($google2fa,true));
+        $registration_data = $request->all();
+        $registration_data["google2fa_secret"] = $google2fa->generateSecretKey();
+        // fwrite(STDOUT,print_r($registration_data,true));
+        $request->session()->flash('registration_data', $registration_data);
+        $QR_Image = $google2fa->getQRCodeInline(
+            config('app.name'),
+            $registration_data['email'],
+            $registration_data['google2fa_secret']
+        );
+        return view('google2fa.register', ['QR_Image' => $QR_Image, 'secret' => $registration_data['google2fa_secret']]);
+        
     }
 }
