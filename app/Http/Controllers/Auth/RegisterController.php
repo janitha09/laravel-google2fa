@@ -75,7 +75,7 @@ class RegisterController extends Controller
         ]);
     }
 
-
+    // https://github.com/guiwoda/laravel-framework/blob/master/src/Illuminate/Foundation/Auth/RegistersUsers.php
     public function register(Request $request){
         $valid = $this->validator($request->all())->validate();
         // print_r($request->all());

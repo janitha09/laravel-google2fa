@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\TwoFactorController;
 // use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\Request;
 use App\User;
@@ -82,7 +83,9 @@ class ExampleTest extends TestCase
         // fwrite(STDOUT,print_r($reponse->getName(),true));
         $this->assertEquals($reponse->getName(),'google2fa.register');
     }
-    // public function testSession(){
-    //     $this->hasSession();
-    // }
+    public function testTwoFactorController(){
+        $twoFactorController = new TwoFactorController();
+        $response = $twoFactorController->doSomething();
+        $this->assertEquals($response->getStatusCode(),302);
+    }
 }

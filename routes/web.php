@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\TwoFactorController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +24,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/complete-registration', 'Auth\RegisterController@completeRegistration');
 
-Route::post('/2fa', function () {
-    return redirect(URL()->previous());
-})->name('2fa')->middleware('2fa');
+Route::post('/2fa', 'TwoFactorController@doSomething')->name('2fa');
